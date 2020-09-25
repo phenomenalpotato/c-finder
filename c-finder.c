@@ -35,10 +35,38 @@ void printf_result(int value) {
 
 }
 
+void help(char *hel, char *text) {
+
+    switch (*hel) { 
+    
+    case 'h': // Option 'h' will display the help with example on how to utilize the program
+        
+        printf("    - How to use:  \n"
+            "           c-finder name_of_the_file \n\n"
+        
+        "    - The file MUST exist to be searched through!\n"
+        "    - Example: \n\n" 
+               "        c-finder example.txt\n\n"
+               "    - If you want to see the text inside the file use: \n\n"
+               "        c-finder name_of_the_file v \n");
+        exit(0);
+
+        break;
+    case 'v': // the 'v' option will print the text that is inside the file
+
+            SEPARQ
+            printf("%s\n", text);
+            SEPARQ
+
+        break;
+        
+    }
+
+}
 
 int main(int argc, char *argv[]) {
 
-    FILE *fh;
+    FILE *fh; // Ponteiro para o arquivo
 
     char texto[500]; 
     char frase[40];
@@ -48,6 +76,11 @@ int main(int argc, char *argv[]) {
     regex_t reg; // Variável para criar a regex
 
     // const char *pattern = "GDPR"; // REgex
+
+    if (*argv[1] == 'h') {
+
+        help(argv[1], NULL); // Chamando a função help() passando como argumento o segundo elemento de argv[2]
+    } 
 
     fh = fopen(argv[1], "r"); // fopen é uma função que abre o arquivo. Parâmetros "r" da função fopen para abrir um arquivo para ler
 
@@ -59,27 +92,19 @@ int main(int argc, char *argv[]) {
 
     fread(texto, sizeof(char), 500, fh);
 
-    // if (fgets(frase, 100, fh) != NULL) {
-
-    //   >  puts(frase); // writing content to stdout
-
-    // }
-
-    // if (fread(buffer, 32, 1, fh)) { // Função para ler um arquivo
-
-    //     // fatal("Não consegui ler os 32 bytes do arquivo");
-
-    // } 
-
     printf("Qual a String que está procurando: ");
-    //fgets(frase, 40, stdin);
     scanf("%s", frase);
 
     printf("Expressão que será usada: %s\n", frase);
 
-    SEPARQ
-    printf("%s\n", texto);
-    SEPARQ
+    if(argc == 3) { // Se haver exatos 3 argumentos passados para o programa. Ou seja, executar o programa com o um argumento 
+
+        if(*argv[2] == 'v') { // if o segundo argumento for igual a 'v' irá passar como argumento para a função help() o char 'v'
+
+            help(argv[2], texto);
+        }
+
+    }
 
     // value = regcomp(&reg, "GDPR", 0); 
     value = regcomp(&reg, frase, 0); 
@@ -103,7 +128,7 @@ int main(int argc, char *argv[]) {
 
     // O processo irá dormir por 3 segundos
     // Maybe you're asking yourself " But, why? " Because it looks cool!
-    // sleep(3);
+    sleep(3);
 
     value = regexec(&reg, texto, 0, NULL, 0); // Função usada para dar match em uma string contra um padrão. regexec(&regex, expression, 0, NULL, 0);
 
