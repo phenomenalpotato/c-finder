@@ -9,5 +9,5 @@ How to:
     To run the program:
          ./c-finder name_of_the_file
 
-If you any help, consult the help option: 
+If you need any help, consult the help option: 
     - c-finder -h
