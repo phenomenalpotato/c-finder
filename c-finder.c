@@ -59,6 +59,12 @@ void help(char *hel, char *text) {
             SEPARQ
 
         break;
+
+    case 'f':
+
+        printf("O arquivo foi criado!\n");
+
+        break;
         
     }
 
@@ -75,7 +81,7 @@ int main(int argc, char *argv[]) {
 
     regex_t reg; // Variável para criar a regex
 
-    if(argc == 1) {
+    if(argc == 1) { // Se não for passado nenhum argumeto, somente o nome do programa para o argv[]
 
         puts("The program MUST have at least one argument!");
         exit(1);
@@ -100,12 +106,12 @@ int main(int argc, char *argv[]) {
     printf("Qual a String que está procurando: ");
     scanf("%s", frase);
 
-    printf("Expressão que será usada: %s\n", frase);
+    // printf("Expressão que será usada: %s\n", frase);
 
-    if(argc == 3) { // Se haver exatos 3 argumentos passados para o programa. Ou seja, executar o programa com o um argumento 
+    if(argc == 3) { // Se houver exatos 3 argumentos passados para o programa. Ou seja, executar o programa com um argumento 
 
-        if(*argv[2] == 'v') { // if o segundo argumento for igual a 'v' irá passar como argumento para a função help() o char 'v'
-
+        if(*argv[2] == 'v' || *argv[2] == 'f') { // if o segundo argumento for igual a 'v' ou igual a 'f' irá passar como argumento para a função help() 
+                                                // o char 'v' ou 'f'
             help(argv[2], texto);
         }
 
