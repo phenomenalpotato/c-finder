@@ -75,7 +75,12 @@ int main(int argc, char *argv[]) {
 
     regex_t reg; // Variável para criar a regex
 
-    // const char *pattern = "GDPR"; // REgex
+    if(argc == 1) {
+
+        puts("The program MUST have at least one argument!");
+        exit(1);
+
+    }
 
     if (*argv[1] == 'h') {
 
@@ -105,8 +110,7 @@ int main(int argc, char *argv[]) {
         }
 
     }
-
-    // value = regcomp(&reg, "GDPR", 0); 
+ 
     value = regcomp(&reg, frase, 0); 
 
     // If compilation is successful
