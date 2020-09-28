@@ -9,7 +9,7 @@ o programa irá printar o nome do arquivo. O arquivo já deve existir! O program
 
 // Macro para colocar uma linha pontilhada para fazer uma "separação melhor" e melhor visualização
 #define PONTO puts("--------------------=====================================--------------------");
-#define SEPARQ puts("-----------================COUNTEUDO NO ARQUIVO=====================------------"); printf("\n");;
+#define SEPARQ printf("-----------================COUNTEUDO NO ARQUIVO=====================------------\n\n");
 
 void printf_result(int value) {
 
@@ -35,7 +35,9 @@ void printf_result(int value) {
 
 }
 
-void help(char *hel, char *text) {
+void help(char *hel, char *text, char *nameFile) {
+
+    FILE *fe;
 
     switch (*hel) { 
     
@@ -59,6 +61,26 @@ void help(char *hel, char *text) {
             SEPARQ
 
         break;
+
+    case 'f':
+
+        fe = fopen("File-Name.txt", "a+");
+
+        if(fe == NULL) {
+
+            perror("Error in opening the file");
+            exit(1);
+        }
+
+        fputs(nameFile, fe);
+
+        fputs("\n", fe);
+
+        printf("O arquivo File-Name.txt foi criado!\nO(s) nome(s) do(s) arquivo(s) que deram Match está escrito no arquivo File-Name.txt\n");
+
+        fclose(fe);
+
+        break;
         
     }
 
@@ -68,14 +90,14 @@ int main(int argc, char *argv[]) {
 
     FILE *fh; // Ponteiro para o arquivo
 
-    char texto[500]; 
+    char texto[1000]; 
     char frase[40];
 
     int value; // value irá armazenar o valor do retorno da função regcomp();
 
     regex_t reg; // Variável para criar a regex
 
-    if(argc == 1) {
+    if(argc == 1) { // Se não for passado nenhum argumeto, somente o nome do programa para o argv[]
 
         puts("The program MUST have at least one argument!");
         exit(1);
@@ -84,7 +106,7 @@ int main(int argc, char *argv[]) {
 
     if (*argv[1] == 'h') {
 
-        help(argv[1], NULL); // Chamando a função help() passando como argumento o segundo elemento de argv[2]
+        help(argv[1], NULL, NULL); // Chamando a função help() passando como argumento o segundo elemento de argv[2]
     } 
 
     fh = fopen(argv[1], "r"); // fopen é uma função que abre o arquivo. Parâmetros "r" da função fopen para abrir um arquivo para ler
@@ -95,18 +117,16 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    fread(texto, sizeof(char), 500, fh);
+    fread(texto, sizeof(char), 1000, fh);
 
     printf("Qual a String que está procurando: ");
     scanf("%s", frase);
 
-    printf("Expressão que será usada: %s\n", frase);
+    if(argc == 3) { // Se houver exatos 3 argumentos passados para o programa. Ou seja, executar o programa com um argumento 
 
-    if(argc == 3) { // Se haver exatos 3 argumentos passados para o programa. Ou seja, executar o programa com o um argumento 
-
-        if(*argv[2] == 'v') { // if o segundo argumento for igual a 'v' irá passar como argumento para a função help() o char 'v'
-
-            help(argv[2], texto);
+        if(*argv[2] == 'v') { // if o segundo argumento for igual a 'v' irá passar como argumento para a função help()  o char 'v'
+            
+            help(argv[2], texto, NULL);
         }
 
     }
@@ -136,15 +156,31 @@ int main(int argc, char *argv[]) {
 
     value = regexec(&reg, texto, 0, NULL, 0); // Função usada para dar match em uma string contra um padrão. regexec(&regex, expression, 0, NULL, 0);
 
-    printf_result(value); // Chamando a função para printar na tela o resultado 
+    printf_result(value ); // Chamando a função para printar na tela o resultado 
     PONTO
 
-    if(value == 0) {
+    if(value == 0 && argc == 3) { // Se a Regex realmente deu match, e foram passados 3 argumentos para o programa 
+       
+        if(*argv[2] == 'f') { //if o segundo argumento for a igual a 'f' irá passar como argumento para a função help() o char 'f'
+       
+            help(argv[2], NULL, argv[1]);
+        
+        }      
+        
+        else { // Caso ele não tenha passado o arguemento 'f', irá printar o nome do arquivo que deu match
 
-        printf("Nome do arquivo na qual deu Match: %s\n", argv[1]);
+            printf("Nome do arquivo na qual deu Match: %s\n", argv[1]); 
+
+        }
 
     }
 
+    else if (value == 0 && argc < 3 || argc > 3) {
+        
+        printf("Nome do arquivo na qual deu Match: %s\n", argv[1]); 
+
+    }
+    
     regfree(&reg);
 
     fclose(fh); // Fecha o arquivo que foi aberto
