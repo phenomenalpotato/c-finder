@@ -9,7 +9,7 @@ o programa irá printar o nome do arquivo. O arquivo já deve existir! O program
 
 // Macro para colocar uma linha pontilhada para fazer uma "separação melhor" e melhor visualização
 #define PONTO puts("--------------------=====================================--------------------");
-#define SEPARQ printf("-----------================COUNTEUDO NO ARQUIVO=====================------------\n\n"); 
+#define SEPARQ printf("-----------================COUNTEUDO NO ARQUIVO=====================------------\n\n");
 
 void printf_result(int value) {
 
@@ -64,7 +64,7 @@ void help(char *hel, char *text, char *nameFile) {
 
     case 'f':
 
-        fe = fopen("File-Name.txt", "w+");
+        fe = fopen("File-Name.txt", "a+");
 
         if(fe == NULL) {
 
@@ -72,7 +72,11 @@ void help(char *hel, char *text, char *nameFile) {
             exit(1);
         }
 
-        fwrite(nameFile, sizeof(char), strlen(nameFile), fe);
+        // fwrite(nameFile, sizeof(char), strlen(nameFile), fe);
+
+        fputs(nameFile, fe);
+
+        fputs("\n", fe);
 
         printf("O arquivo File-Name.txt foi criado!\nO(s) nome(s) do(s) arquivo(s) que deram Match está escrito no arquivo File-Name.txt\n");
 
@@ -88,7 +92,7 @@ int main(int argc, char *argv[]) {
 
     FILE *fh; // Ponteiro para o arquivo
 
-    char texto[500]; 
+    char texto[1000]; 
     char frase[40];
 
     int value; // value irá armazenar o valor do retorno da função regcomp();
@@ -115,7 +119,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    fread(texto, sizeof(char), 500, fh);
+    fread(texto, sizeof(char), 1000, fh);
 
     printf("Qual a String que está procurando: ");
     scanf("%s", frase);
@@ -150,7 +154,7 @@ int main(int argc, char *argv[]) {
 
     // O processo irá dormir por 3 segundos
     // Maybe you're asking yourself " But, why? " Because it looks cool!
-    sleep(3);
+    //sleep(3);
 
     value = regexec(&reg, texto, 0, NULL, 0); // Função usada para dar match em uma string contra um padrão. regexec(&regex, expression, 0, NULL, 0);
 
@@ -179,7 +183,6 @@ int main(int argc, char *argv[]) {
 
     }
     
-
     regfree(&reg);
 
     fclose(fh); // Fecha o arquivo que foi aberto
