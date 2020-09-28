@@ -10,4 +10,4 @@ How to:
          ./c-finder name_of_the_file
 
 If you need any help, consult the help option: 
-    - c-finder -h
+    - c-finder h
