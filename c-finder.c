@@ -72,8 +72,6 @@ void help(char *hel, char *text, char *nameFile) {
             exit(1);
         }
 
-        // fwrite(nameFile, sizeof(char), strlen(nameFile), fe);
-
         fputs(nameFile, fe);
 
         fputs("\n", fe);
@@ -154,7 +152,7 @@ int main(int argc, char *argv[]) {
 
     // O processo irá dormir por 3 segundos
     // Maybe you're asking yourself " But, why? " Because it looks cool!
-    //sleep(3);
+    sleep(3);
 
     value = regexec(&reg, texto, 0, NULL, 0); // Função usada para dar match em uma string contra um padrão. regexec(&regex, expression, 0, NULL, 0);
 
