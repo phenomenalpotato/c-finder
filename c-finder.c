@@ -14,7 +14,7 @@ the program will print the file name. The file must already exist! */
 // Macro para colocar uma linha pontilhada para fazer uma "separação melhor" e melhor visualização
 // Macro to put one dotted line to do a "better separation" and better visualization
 #define PONTO puts("--------------------=====================================--------------------");
-#define SEPARQ printf("-----------================COUNTEUDO NO ARQUIVO=====================------------\n\n");
+#define SEPARQ printf("-----------================CONTENT IN THE FILE=====================------------\n\n");
 
 void printf_result(int value) {
 
