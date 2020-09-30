@@ -166,7 +166,7 @@ int main(int argc, char *argv[]) {
     // O processo irá dormir por 3 segundos
     // The process wiil sleep for 3 seconds
     // Maybe you're asking yourself " But, why? " Because it looks cool!
-    sleep(3);
+    // sleep(3);
 
     value = regexec(&reg, texto, 0, NULL, 0); // Função usada para dar match em uma string contra um padrão. regexec(&regex, expression, 0, NULL, 0);
                                              // Function used to match a string against a pattern. regexec (& regex, expression, 0, NULL, 0);
